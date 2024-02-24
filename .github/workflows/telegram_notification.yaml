@@ -1,17 +1,23 @@
-name: Telegram Notification
+name: Inline Message Workflow
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  notify:
+  send-inline-message:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Telegram Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="Hello from GitHub Actions!"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Send Inline Telegram Message
+        uses: cbrgm/telegram-github-action@v1
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          message: |
+            New commit by ${{ github.actor }}!
+            Commit: ${{ github.event.head_commit.message }}
+            Repository: ${{ github.repository }}
+            View changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
