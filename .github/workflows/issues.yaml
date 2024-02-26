@@ -1,5 +1,4 @@
-name: Telegram Notification on Issue Creation
-
+name: Send Telegram Message on New Issue
 on:
   issues:
     types: [opened]
@@ -8,9 +7,9 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Telegram Message
-        env:
-            TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
-            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: |    
-          message: "New issue created: ${{ github.event.issue.title }}. Check it [here](${{ github.event.issue.html_url }})"
+    - name: Send Telegram Message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: "New issue created: ${{ github.event.issue.title }} (${{ github.event.issue.html_url }})"
