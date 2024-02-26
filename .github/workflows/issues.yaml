@@ -12,5 +12,5 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: "New issue created: ${{ github.event.issue.title }}. Check it [here](${{ github.event.issue.html_url }})"
